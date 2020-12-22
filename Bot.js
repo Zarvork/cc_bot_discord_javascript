@@ -43,11 +43,52 @@ if (message.content === "!emojiliste") {
  const emojiliste = message.guild.emojis.cache.map((e) => e.toString() + " => " + ":" +e.name + ":");
  message.channel.send(emojiliste);
 }
-if (message.content == "!caraquiz") {
+if (message.content === "!caraquiz") {
 	 message.channel.send("Nous allons jouer a un caraquiz !\nPour répondre il te suffira de donner la lettre correspondante a la réponse que tu aura choisi" + " " + bot.emojis.cache.get("790586256647127040").toString()).then(addreact => {addreact.react(bot.emojis.cache.get("790586256647127040").toString());});
-	
-	 
-}
+	 message.channel.send(
+	 {
+ embed: {
+ color: 3447003,
+ description: "__**Question n°1:**__",
+ fields: [
+ {
+ name: "Un gentil Cobra m'a crée",
+ value: "A: Vraie B: Faux"
+ }
+ ]
+ }
+ }
+ );
+const filter = m => m.content === "A";
+const collector = message.channel.createMessageCollector(filter);
 
+collector.on('collect', m => {
+	message.channel.send("Bonne réponse !" + " " + bot.emojis.cache.get("790579087542321163").toString()).then(addreact => {addreact.react(bot.emojis.cache.get("790586256647127040").toString());});
+	collector.stop();
+	collector2.stop();
 });
-bot.login("NzkwNTY2NDA0MDQ2MTkyNjQx.X-CeVg.KMeFEqyCIfING2ddivamiSDoEW4");
+const filter2 = m2 => m2.content === "B";
+const collector2 = message.channel.createMessageCollector(filter2);
+
+collector2.on('collect', m2 => {
+	message.channel.send("Mauvaise réponse !" + " " + bot.emojis.cache.get("790586256592863232").toString()).then(addreact => {addreact.react(bot.emojis.cache.get("790586256592863232").toString());});
+	collector.stop();
+	collector2.stop();
+});
+message.channel.send(
+	 {
+ embed: {
+ color: 3447003,
+ description: "__**Question n°2:**__",
+ fields: [
+ {
+ name: "Quel est le meilleur starter parmis ces choix ?",
+ value: "A: Bulbizarre B: Carapuce C: Salamèche"
+ }
+ ]
+ }
+ }
+ );
+}
+});
+bot.login("");
